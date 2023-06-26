@@ -47,20 +47,14 @@ namespace Newsler
 
                 using (var dbContext = new NewsContext())
                 {
-                    // Check if articles already exist in the database
-                    var existingArticles = dbContext.Articles.ToList();
+                    // Get existing article titles and links from the database
+                    var existingArticles = dbContext.Articles.Select(a => new { a.Title, a.Link }).ToList();
 
-                    foreach (var article in articles)
-                    {
-                        // Check if the article already exists in the database
-                        var existingArticle = existingArticles.FirstOrDefault(a => a.Title == article.Title && a.Link == article.Link);
+                    // Filter out existing articles based on title and link
+                    var newArticles = articles.Where(a => !existingArticles.Any(e => e.Title == a.Title && e.Link == a.Link));
 
-                        if (existingArticle == null)
-                        {
-                            // Article is new, add it to the database
-                            dbContext.Articles.Add(article);
-                        }
-                    }
+                    // Add new articles to the database
+                    dbContext.Articles.AddRange(newArticles);
 
                     // Save changes to the database
                     dbContext.SaveChanges();
