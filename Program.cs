@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,11 @@ namespace Newsler
     class Program
     {
         static void Main(string[] args)
+        {
+            RunProgram();
+        }
+
+        public static void RunProgram()
         {
             // Set the path to the ChromeDriver executable
             string chromeDriverPath = "path/to/chromedriver";
